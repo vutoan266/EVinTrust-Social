@@ -15,13 +15,13 @@ function ShareForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const db = getFirestore(app);
-  console.log(session);
 
-  const onFinish = async (values) => {
+  const onFinish = async ({ images, ...values }) => {
     const postId = moment().unix().toString();
     setLoading(true);
     const postData = {
       ...values,
+      images: images.map((item) => item.url),
       userName: session.user.name,
       email: session.user.email || "",
       userImage: session.user.image,
@@ -57,7 +57,7 @@ function ShareForm() {
         onFinish={onFinish}
       >
         <Form.Item
-          name="image"
+          name="images"
           rules={[{ required: true, message: "Tải hình ảnh" }]}
         >
           <Uploader />

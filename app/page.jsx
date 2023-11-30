@@ -3,8 +3,9 @@ import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { collection, getDocs, getFirestore, query } from "firebase/firestore";
 import app from "./Shared/firebaseConfig";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import PinList from "./components/Pins/PinList";
+import { Skeleton } from "antd";
 
 export default function Home() {
   const db = getFirestore(app);
@@ -24,8 +25,8 @@ export default function Home() {
   };
 
   return (
-    <div className="">
+    <Suspense loading={<Skeleton />}>
       <PinList listOfPins={listOfPins} />
-    </div>
+    </Suspense>
   );
 }

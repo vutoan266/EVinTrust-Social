@@ -1,12 +1,13 @@
-import { Spin, Upload, UploadProps, notification } from "antd";
+import { Spin, Upload, UploadFile, UploadProps, notification } from "antd";
 import { FC, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import app from "../../Shared/firebaseConfig";
 
-interface IProps extends UploadProps {
-  value: any;
+interface IProps extends Omit<UploadProps, "onChange"> {
+  value: UploadFile<{ url: string; name: string }>[];
+  onChange?: (value: UploadFile<{ url: string; name: string }>[]) => void;
 }
 
 export const beforeImage5mbUpload = (file: any) => {
@@ -39,13 +40,10 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
   }: any) => {
     const storageRef = ref(storage, "pinterest/" + file.name);
     uploadBytes(storageRef, file)
-      .then((snapshot) => {
-        console.log("File Uploaded");
-      })
+      .then((snapshot) => {})
       .then((resp) => {
         getDownloadURL(storageRef).then(async (url) => {
-          console.log("DownloadUrl", url);
-          onSuccess({ imageUrl: url, filename });
+          onSuccess({ url, name: filename });
         });
       })
       .catch(() => {
@@ -56,29 +54,35 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
       });
   };
 
-  const handleFileChange = (info: any) => {
+  const handleFileChange = (info: {
+    file: UploadFile<{ url: string; name: string }>;
+  }) => {
     const { status, uid } = info.file;
-
     if (status === "done") {
-      onChange?.(info.file.response?.imageUrl);
+      onChange?.(
+        value?.map((item) =>
+          item.uid === uid ? { ...info.file, ...info.file.response } : item
+        )
+      );
       setLoading(false);
       notification.success({
         message: `${info.file.name} file uploaded successfully.`,
         placement: "topRight",
       });
     } else if (status === "error") {
-      // const newList = value?.filter((file: any) => file.uid !== uid) || [];
-      // onChange?.(newList);
+      const newList = value?.filter((file) => file.uid !== uid) || [];
+      onChange?.(newList);
       setLoading(false);
       notification.error({
         message: `Sorry ${info.file.name} didn't upload, please try again.`,
         placement: "topRight",
       });
+    } else if (status === "removed") {
+      const newList = value?.filter((file) => file.uid !== uid) || [];
+      onChange?.(newList);
     } else {
       setLoading(true);
-      // const newList =
-      //   value?.map((file: any) => (file.uid === uid ? info.file : file)) || [];
-      // onChange?.(newList);
+      onChange?.([...(value || []), info.file]);
     }
 
     return true;
@@ -86,7 +90,7 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
 
   const uploadButton = (
     <div className="h-28 flex justify-center items-center flex-col">
-      {loading ? <Spin /> : <AiOutlinePlus />}
+      <AiOutlinePlus />
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
@@ -96,12 +100,13 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
       name="avatar"
       listType="picture-card"
       className="avatar-uploader"
-      showUploadList={false}
+      showUploadList={true}
       customRequest={uploadFile}
       beforeUpload={beforeImage5mbUpload}
       onChange={handleFileChange}
+      fileList={value}
     >
-      {value ? <img src={value} alt="avatar" className="h-28" /> : uploadButton}
+      {uploadButton}
     </Upload>
   );
 };

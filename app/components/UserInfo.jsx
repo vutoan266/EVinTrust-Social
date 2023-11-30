@@ -26,7 +26,7 @@ function UserInfo({ userInfo }) {
         alt="userImage"
         width={100}
         height={100}
-        className="rounded-full"
+        className="rounded-full mb-4"
       />
 
       <h2

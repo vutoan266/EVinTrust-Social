@@ -14,6 +14,7 @@ import {
 import PinList from "./../components/Pins/PinList";
 import { getValidUserId } from "../utils/utils";
 import { signOut } from "next-auth/react";
+import { Skeleton, Spin } from "antd";
 
 function Profile({ params }) {
   const db = getFirestore(app);
@@ -56,13 +57,15 @@ function Profile({ params }) {
     });
   };
   return (
-    <div>
+    <div className="py-14 text-center">
       {userInfo ? (
         <div>
           <UserInfo userInfo={userInfo} />
           <PinList listOfPins={listOfPins} />
         </div>
-      ) : null}
+      ) : (
+        <Spin className="m-auto" />
+      )}
     </div>
   );
 }

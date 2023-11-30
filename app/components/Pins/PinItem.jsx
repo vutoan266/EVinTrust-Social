@@ -11,20 +11,18 @@ function PinItem({ pin }) {
     image: pin?.userImage,
   };
   return (
-    <div className="">
-      <div
-        class="relative hover:before:bg-gray-600 before:opacity-50 before:w-full before:h-full before:z-10 cursor-pointer"
-        onClick={() => router.push("/pin/" + pin.id)}
-      >
-        <Image
-          src={pin.image}
-          alt={pin.title}
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="rounded-3xl cursor-pointer relative z-0 bg-gray-50 h-auto w-full"
-        />
-      </div>
+    <div
+      className="relative hover:before:bg-gray-600 before:opacity-50 before:w-full before:h-full before:z-10 cursor-pointer flex flex-col overflow-auto"
+      onClick={() => router.push("/pin/" + pin.id)}
+    >
+      <Image
+        src={pin.images?.[0]}
+        alt={pin.title}
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="rounded-3xl cursor-pointer relative z-0 bg-gray-50 h-auto w-full"
+      />
       <div className="flex justify-between items-center">
         <h2 className="font-semibold text-[18px] mb-1 mt-2 line-clamp-2">
           {pin.title}
