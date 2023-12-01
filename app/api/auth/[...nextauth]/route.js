@@ -16,7 +16,7 @@ const handler = NextAuth({
   theme: {
     colorScheme: "light", // "auto" | "dark" | "light"
     brandColor: "#000", // Hex color code
-    logo: "/EV.png", // Absolute URL to image
+    logo: "/logo-no-background.png", // Absolute URL to image
     buttonText: "", // Hex color code
   },
 });

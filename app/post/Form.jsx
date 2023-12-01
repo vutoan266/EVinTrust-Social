@@ -9,6 +9,8 @@ import { Uploader } from "./Uploader/Uploader";
 import { HiOutlineMapPin, HiOutlineShoppingBag } from "react-icons/hi2";
 import moment from "moment";
 import { HiArrowSmallLeft } from "react-icons/hi2";
+import pickBy from "lodash/pickBy";
+import { TagSelect } from "./TagSelect/TagSelect";
 
 function ShareForm() {
   const { data: session } = useSession();
@@ -19,7 +21,7 @@ function ShareForm() {
   const onFinish = async ({ images, ...values }) => {
     const postId = moment().unix().toString();
     setLoading(true);
-    const postData = {
+    const postData = pickBy({
       ...values,
       images: images.map((item) => item.url),
       userName: session.user.name,
@@ -27,7 +29,7 @@ function ShareForm() {
       userImage: session.user.image,
       createdAt: moment().toISOString(),
       id: postId,
-    };
+    });
     try {
       await setDoc(doc(db, "pinterest-post", postId), postData).then((resp) => {
         console.log("Saved");
@@ -49,13 +51,7 @@ function ShareForm() {
 
         <h2 className="text-xl md:text-[30px] font-bold mb-0">Đăng bài</h2>
       </div>
-      <Form
-        // name="trigger"
-        // style={{ maxWidth: 600 }}
-        layout="vertical"
-        autoComplete="off"
-        onFinish={onFinish}
-      >
+      <Form layout="vertical" autoComplete="off" onFinish={onFinish}>
         <Form.Item
           name="images"
           rules={[{ required: true, message: "Tải hình ảnh" }]}
@@ -78,6 +74,13 @@ function ShareForm() {
           rules={[{ required: true, message: "Nhập mô tả" }]}
         >
           <Input.TextArea placeholder="Mô tả" className="w-full text-sm" />
+        </Form.Item>
+        <Form.Item
+          label="Thẻ"
+          name="tags"
+          rules={[{ required: true, message: "Nhập thẻ" }]}
+        >
+          <TagSelect placeholder="Mô tả" className="w-full text-sm" />
         </Form.Item>
         <Form.Item
           label="Đường dẫn"

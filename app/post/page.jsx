@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import Form from "./../components/Form";
+import Form from "./Form";
 import { Skeleton } from "antd";
 function PinBuilder() {
   return (

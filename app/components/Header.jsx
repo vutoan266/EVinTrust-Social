@@ -35,15 +35,15 @@ function Header() {
   };
 
   return (
-    <div className="flex justify-between gap-3 md:gap-2 items-center px-6 py-3 bg-[#afb8c1] fixed top-0 right-0 left-0 z-10">
+    <div className="flex justify-between gap-3 md:gap-2 items-center px-6 py-3 bg-white fixed top-0 right-0 left-0 z-10 border-solid border-0 border-b border-[#FD6C23]">
       <Image
-        src="/EV.png"
+        src="/logo-no-background.png"
         alt="logo"
         width={0}
         height={0}
         sizes="100vw"
         onClick={() => router.push("/")}
-        className="hover:bg-gray-300 cursor-pointer rounded-[4px] w-16 h-auto"
+        className="hover:bg-gray-300 cursor-pointer rounded-[4px] h-8 w-auto"
       />
       <div className="flex items-center gap-4">
         {session?.user ? (
