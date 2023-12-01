@@ -22,7 +22,7 @@ export const useTags = () => {
       const docSnap = await getDocs(docRef);
       const optionList: ITag[] = [];
       docSnap.forEach((item) => {
-        const doc = item.data();
+        const doc: { name: string; count: number } = item.data();
         optionList.push({ ...doc, label: doc.name, value: doc.name });
       });
       setOptions(optionList);
