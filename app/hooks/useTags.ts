@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import { getDocs, getFirestore, collection } from "firebase/firestore";
+import { useMemo } from "react";
+import { getFirestore, collection } from "firebase/firestore";
 import app from "@/app/Shared/firebaseConfig";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 interface ITag {
   name: string;
@@ -11,29 +12,25 @@ interface ITag {
 }
 
 export const useTags = () => {
-  const [options, setOptions] = useState<ITag[]>([]);
-  const [loading, setLoading] = useState(false);
-  const db = getFirestore(app);
-
-  const getOptions = async () => {
-    try {
-      setLoading(true);
-      const docRef = collection(db, "tags");
-      const docSnap = await getDocs(docRef);
-      const optionList: ITag[] = [];
-      docSnap.forEach((item) => {
-        const doc = item.data() as { name: string; count: number };
-        optionList.push({ ...doc, label: doc.name, value: doc.name });
-      });
-      setOptions(optionList);
-    } finally {
-      setLoading(false);
+  const [value, loading, error] = useCollection(
+    collection(getFirestore(app), "tags"),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
     }
-  };
+  );
 
-  useEffect(() => {
-    getOptions();
-  }, []);
+  const options = useMemo(
+    () =>
+      value?.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          label: data.name,
+          value: data.name,
+        };
+      }) || [],
+    [value]
+  );
 
   return {
     options,
