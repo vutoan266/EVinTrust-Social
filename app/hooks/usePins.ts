@@ -1,7 +1,6 @@
 "use client";
-import { useMemo } from "react";
-import { getFirestore, collection } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { getFirestore, collection, where, query } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import app from "../Shared/firebaseConfig";
 
 interface IPin {
@@ -16,17 +15,15 @@ interface IPin {
   ggLink: string;
 }
 
-export const usePins = () => {
-  const [value, loading, error] = useCollection<IPin>(
-    collection(getFirestore(app), "pinterest-post"),
+export const usePins = ({ tag }: { tag?: string }) => {
+  const [pins, loading, error] = useCollectionData<IPin>(
+    query(
+      collection(getFirestore(app), "pinterest-post"),
+      tag ? where("tags", "array-contains", tag) : undefined
+    ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
-  );
-
-  const pins = useMemo(
-    () => (value?.docs.map((doc) => doc.data()) as IPin[]) || [],
-    [value]
   );
 
   return {

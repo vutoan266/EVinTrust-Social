@@ -2,38 +2,30 @@
 import { useMemo } from "react";
 import { getFirestore, collection } from "firebase/firestore";
 import app from "@/app/Shared/firebaseConfig";
-import { useCollection } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 
 interface ITag {
   name: string;
   count: number;
-  label: string;
-  value: string;
+}
+
+export enum ETagEnum {
+  tuTap = "🔥Tụ tập",
 }
 
 export const useTags = () => {
-  const [value, loading, error] = useCollection(
+  const [tags, loading, error] = useCollectionData<ITag>(
     collection(getFirestore(app), "tags"),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   );
 
-  const options = useMemo(
-    () =>
-      value?.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          ...data,
-          label: data.name,
-          value: data.name,
-        };
-      }) || [],
-    [value]
-  );
-
   return {
-    options,
+    tags,
     loading,
   };
 };

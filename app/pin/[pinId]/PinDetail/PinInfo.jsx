@@ -2,6 +2,7 @@ import React from "react";
 import UserTag from "../../../components/UserTag";
 import { HiOutlineMapPin, HiOutlineShoppingBag } from "react-icons/hi2";
 import { Tag } from "antd";
+import { ETagEnum } from "../../../hooks/useTags";
 
 function PinInfo({ pinDetail }) {
   const user = {
@@ -16,7 +17,10 @@ function PinInfo({ pinDetail }) {
         <p>{pinDetail.desc}</p>
         <p>
           {pinDetail.tags?.map((tag) => (
-            <Tag key={tag} color={tag === "🔥Tụ tập" ? "volcano" : undefined}>
+            <Tag
+              key={tag}
+              color={tag === ETagEnum.tuTap ? "volcano" : undefined}
+            >
               {tag}
             </Tag>
           ))}

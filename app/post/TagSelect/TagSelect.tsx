@@ -3,14 +3,14 @@ import { useTags } from "@/app/hooks/useTags";
 
 export const TagSelect = (props: SelectProps<string[]>) => {
   const { value, ...restProps } = props;
-  const { options, loading } = useTags();
+  const { tags, loading } = useTags();
 
   return (
     <Select
       allowClear
       loading={loading}
       value={value}
-      options={options}
+      options={tags?.map((tag) => ({ label: tag.name, value: tag.name }))}
       mode="tags"
       {...restProps}
     />
