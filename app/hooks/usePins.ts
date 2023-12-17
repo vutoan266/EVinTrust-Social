@@ -18,7 +18,7 @@ interface IPin {
 export const usePins = ({ tag }: { tag?: string }) => {
   const [pins, loading] = useCollectionData<IPin>(
     query(
-      collection(getFirestore(app), "pinterest-post"),
+      collection<IPin>(getFirestore(app), "pinterest-post"),
       tag ? where("tags", "array-contains", tag) : undefined
     ),
     {
