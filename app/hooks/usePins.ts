@@ -19,7 +19,7 @@ export const usePins = ({ tag }: { tag?: string }) => {
   const [pins, loading] = useCollectionData(
     query(
       collection(getFirestore(app), "pinterest-post"),
-      tag ? where("tags", "array-contains", tag) : undefined
+      ...(tag ? [where("tags", "array-contains", tag)] : [])
     ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
