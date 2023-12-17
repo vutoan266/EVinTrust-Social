@@ -26,9 +26,9 @@ function PinItem({ pin }) {
           sizes="100vw"
           className="rounded-lg cursor-pointer relative z-0 bg-gray-50 h-auto w-full"
         />
-        <div className="absolute bottom-1 left-1">
+        <div className="absolute bottom-1 left-2">
           {pin.tags?.map((tag) => (
-            <Tag key={tag} className="bg-white/50">
+            <Tag key={tag} className="bg-white/70 border-none">
               {tag}
             </Tag>
           ))}

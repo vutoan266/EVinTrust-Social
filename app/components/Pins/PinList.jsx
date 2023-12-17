@@ -20,7 +20,7 @@ function PinList() {
             onChange={(checked) =>
               setSelectedTag(checked ? tag.name : undefined)
             }
-            className="border-solid border border-gray-200 min-w-[60px] py-1 text-center text-sm"
+            className="border-solid border border-green-400 min-w-[60px] py-1 text-center text-sm"
           >
             {tag.name}
           </CheckableTag>

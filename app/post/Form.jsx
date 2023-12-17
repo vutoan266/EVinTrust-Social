@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import app from "../Shared/firebaseConfig";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { Button, Form, Input, Space } from "antd";
+import { Button, Form, Input } from "antd";
 import { Uploader } from "./Uploader/Uploader";
 import { HiOutlineMapPin, HiOutlineShoppingBag } from "react-icons/hi2";
 import moment from "moment";
@@ -31,7 +31,7 @@ function ShareForm() {
       id: postId,
     });
     try {
-      await setDoc(doc(db, "pinterest-post", postId), postData).then((resp) => {
+      await setDoc(doc(db, "pinterest-post", postId), postData).then(() => {
         console.log("Saved");
         router.push("/" + session.user.email);
       });
@@ -88,13 +88,13 @@ function ShareForm() {
           // rules={[{ required: true, message: "Nhập đường dẫn" }]}
         >
           <Input
-            placeholder="Nhập đường dẫn"
+            placeholder="Link mua hàng"
             className="w-full"
             addonBefore={<HiOutlineShoppingBag />}
           />
         </Form.Item>
         <Form.Item
-          label="Địa chỉ"
+          label="Địa chỉ/Vị trí"
           name="ggLink"
           // rules={[{ required: true, message: "Nhập link Google map" }]}
         >
