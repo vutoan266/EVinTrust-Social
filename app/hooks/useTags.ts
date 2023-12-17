@@ -14,7 +14,7 @@ export enum ETagEnum {
 }
 
 export const useTags = () => {
-  const [tags, loading] = useCollectionData<ITag>(
+  const [tags, loading] = useCollectionData(
     collection(getFirestore(app), "tags"),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
@@ -22,7 +22,7 @@ export const useTags = () => {
   );
 
   return {
-    tags,
+    tags: tags as ITag[],
     loading,
   };
 };
