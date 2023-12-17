@@ -13,8 +13,7 @@ import {
 } from "firebase/firestore";
 import PinList from "./../components/Pins/PinList";
 import { getValidUserId } from "../utils/utils";
-import { signOut } from "next-auth/react";
-import { Skeleton, Spin } from "antd";
+import { Spin } from "antd";
 
 function Profile({ params }) {
   const db = getFirestore(app);

@@ -1,8 +1,8 @@
-import { Spin, Upload, UploadFile, UploadProps, notification } from "antd";
-import { FC, useState } from "react";
+/* eslint-disable no-unused-vars */
+import { Upload, UploadFile, UploadProps, notification } from "antd";
+import { FC } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 import app from "../../Shared/firebaseConfig";
 
 interface IProps extends Omit<UploadProps, "onChange"> {
@@ -28,20 +28,12 @@ export const beforeImage5mbUpload = (file: any) => {
 
 export const Uploader: FC<IProps> = ({ value, onChange }) => {
   const storage = getStorage(app);
-  const db = getFirestore(app);
-  const [loading, setLoading] = useState(false);
 
-  const uploadFile = ({
-    file,
-    onSuccess,
-    filename,
-    onError,
-    onProgress,
-  }: any) => {
+  const uploadFile = ({ file, onSuccess, filename }: any) => {
     const storageRef = ref(storage, "pinterest/" + file.name);
     uploadBytes(storageRef, file)
-      .then((snapshot) => {})
-      .then((resp) => {
+      .then(() => {})
+      .then(() => {
         getDownloadURL(storageRef).then(async (url) => {
           onSuccess({ url, name: filename });
         });
@@ -64,7 +56,6 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
           item.uid === uid ? { ...info.file, ...info.file.response } : item
         )
       );
-      setLoading(false);
       notification.success({
         message: `${info.file.name} file uploaded successfully.`,
         placement: "topRight",
@@ -72,7 +63,6 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
     } else if (status === "error") {
       const newList = value?.filter((file) => file.uid !== uid) || [];
       onChange?.(newList);
-      setLoading(false);
       notification.error({
         message: `Sorry ${info.file.name} didn't upload, please try again.`,
         placement: "topRight",
@@ -81,7 +71,6 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
       const newList = value?.filter((file) => file.uid !== uid) || [];
       onChange?.(newList);
     } else {
-      setLoading(true);
       onChange?.([...(value || []), info.file]);
     }
 

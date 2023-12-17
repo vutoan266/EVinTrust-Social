@@ -44,6 +44,7 @@ function UserInfo({ userInfo }) {
           <Button
             className="font-semibold mt-5 rounded-full w-20"
             onClick={() => onLogoutClick()}
+            loading={isLoading}
           >
             Logout
           </Button>
