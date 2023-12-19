@@ -28,11 +28,8 @@ function PinDetail({ params }) {
   return (
     <>
       {pinDetail ? (
-        <div className="p-3 !pt-0 md:p-12 md:px-24 lg:px-36">
-          <div
-            className="flex gap-3 md:gap-4 flex-col
-            rounded-2xl p-3 md:p-7 lg:p-12 xl:pd-16 "
-          >
+        <div className="text-center">
+          <div className="flex gap-3 md:gap-4 flex-col rounded-2xl p-6 max-w-2xl m-auto">
             <div className="flex items-center ">
               <HiArrowSmallLeft
                 className="text-4xl md:text-4xl font-bold -ml-1 mr-4

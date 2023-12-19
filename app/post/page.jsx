@@ -4,7 +4,7 @@ import { Skeleton } from "antd";
 function PinBuilder() {
   return (
     <Suspense loading={<Skeleton />}>
-      <div className="min-h-screen p-3">
+      <div className="min-h-screen">
         <Form />
       </div>
     </Suspense>

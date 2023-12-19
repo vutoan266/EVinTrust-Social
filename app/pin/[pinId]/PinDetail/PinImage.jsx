@@ -4,11 +4,13 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { twMerge } from "tailwind-merge";
+import "./styles.scss";
 
 function PinImage({ pinDetail }) {
   return (
     <Slider
-      className="slider variable-width center"
+      className={twMerge("slider variable-width center PinImage")}
       dots
       infinite={false}
       centerMode
@@ -17,7 +19,7 @@ function PinImage({ pinDetail }) {
     >
       {pinDetail.images?.map((image) => (
         <div key={image} className="mr-4">
-          <img src={image} height={500} />
+          <img src={image} height={500} alt="" />
         </div>
       )) || []}
     </Slider>

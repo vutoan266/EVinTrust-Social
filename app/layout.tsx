@@ -28,7 +28,7 @@ export default function RootLayout({
         <Provider>
           <Header />
           <StyledComponentsRegistry>
-            <div className="pt-12">
+            <div className="pt-16">
               <Suspense fallback={<Loading />}>{children}</Suspense>
             </div>
           </StyledComponentsRegistry>
