@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PinItem from "./PinItem";
 import { usePins } from "@/app/hooks/usePins";
 import { useTags } from "@/app/hooks/useTags";
 import CheckableTag from "antd/es/tag/CheckableTag";
 import { Spin } from "antd";
+import { SkeletonCard } from "../SkeletonCard";
 
 function PinList() {
   const [selectedTag, setSelectedTag] = useState();
-  const { pins, loading: pinsLoading } = usePins({ tag: selectedTag });
+  const {
+    pins,
+    loading: pinsLoading,
+    getMore,
+    hasMore,
+  } = usePins({ tag: selectedTag });
   const { tags } = useTags();
 
+  const handleScroll = () => {
+    if (
+      document.scrollingElement.scrollHeight -
+        (window.innerHeight + document.documentElement.scrollTop) <
+        200 &&
+      !pinsLoading
+    ) {
+      hasMore && getMore();
+      return;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pinsLoading, hasMore]);
+
   return (
-    <div className="mt-8 px-2 md:px-5">
+    <div className="mt-3 px-4 md:px-5 pb-4">
       <div className="">
         {tags?.map((tag) => (
           <CheckableTag
@@ -31,7 +54,8 @@ function PinList() {
           <PinItem key={item.createdAt} pin={item} />
         ))}
       </div>
-      {pinsLoading && <Spin className="m-auto" />}
+      {pinsLoading &&
+        (pins?.length ? <Spin className="m-auto" /> : <SkeletonCard />)}
     </div>
   );
 }

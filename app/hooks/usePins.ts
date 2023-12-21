@@ -1,7 +1,17 @@
 "use client";
-import { getFirestore, collection, where, query } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  getFirestore,
+  collection,
+  where,
+  query,
+  orderBy,
+  limit,
+  getDocs,
+  startAfter,
+} from "firebase/firestore";
+// import { useCollectionData } from "react-firebase-hooks/firestore";
 import app from "../Shared/firebaseConfig";
+import { useEffect, useRef, useState } from "react";
 
 interface IPin {
   userName: string;
@@ -15,19 +25,63 @@ interface IPin {
   ggLink: string;
 }
 
-export const usePins = ({ tag }: { tag?: string }) => {
-  const [pins, loading] = useCollectionData(
-    query(
-      collection(getFirestore(app), "pinterest-post"),
-      ...(tag ? [where("tags", "array-contains", tag)] : [])
-    ),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
+interface IProps {
+  tag?: string;
+}
+
+const LIMIT = 20;
+
+export const usePins = ({ tag }: IProps) => {
+  const [pins, setPins] = useState<IPin[]>([]);
+  const [loading, setLoading] = useState(false);
+  const lastCursorRef = useRef();
+
+  // const [pins, loading] = useCollectionData(
+  //   query(
+  //     collection(getFirestore(app), "pinterest-post"),
+  //     ...(tag ? [where("tags", "array-contains", tag)] : []),
+  //     orderBy("createdAt", "desc"),
+  //     limit(20)
+  //   ),
+  //   {
+  //     snapshotListenOptions: { includeMetadataChanges: true },
+  //   }
+  // );
+
+  const getMore = async (firstLoad?: boolean) => {
+    if (!firstLoad && !lastCursorRef.current) return;
+    setLoading(true);
+    try {
+      const q = query(
+        collection(getFirestore(app), "pinterest-post"),
+        ...(tag ? [where("tags", "array-contains", tag)] : []),
+        orderBy("createdAt", "desc"),
+        ...(firstLoad ? [] : [startAfter(lastCursorRef.current)]),
+        limit(LIMIT)
+      );
+      const querySnapshot = await getDocs(q);
+
+      lastCursorRef.current = querySnapshot.docs[querySnapshot.docs.length - 1];
+      // set data
+      const newData: IPin[] = [];
+      querySnapshot.forEach((doc) => {
+        newData.push(doc.data());
+      });
+      if (firstLoad) setPins(newData);
+      else setPins((prev) => [...prev, ...newData]);
+    } finally {
+      setLoading(false);
     }
-  );
+  };
+
+  useEffect(() => {
+    getMore(true);
+  }, [tag]);
 
   return {
     pins: pins as IPin[],
+    getMore,
     loading,
+    hasMore: !!lastCursorRef.current,
   };
 };
