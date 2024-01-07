@@ -67,7 +67,7 @@ export const usePins = ({ tag }: IProps) => {
       // set data
       const newData: IPin[] = [];
       querySnapshot.forEach((doc) => {
-        newData.push(doc.data());
+        newData.push(doc.data() as IPin);
       });
       if (firstLoad) setPins(newData);
       else setPins((prev) => [...prev, ...newData]);
