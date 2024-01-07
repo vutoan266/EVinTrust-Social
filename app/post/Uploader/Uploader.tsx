@@ -38,7 +38,7 @@ export const Uploader: FC<IProps> = ({ value, onChange }) => {
     onError,
   }: UploadRequestOption<{ name?: string; url?: string }>) => {
     const storageRef = ref(storage, "pinterest/" + (file as RcFile).name);
-    uploadBytes(storageRef, file)
+    uploadBytes(storageRef, file as any)
       .then(() => {})
       .then(() => {
         getDownloadURL(storageRef).then(async (url) => {
