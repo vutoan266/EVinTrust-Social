@@ -5,6 +5,10 @@ import Provider from "./Provider";
 import StyledComponentsRegistry from "../lib/AntdRegistry";
 import React, { Suspense } from "react";
 import Loading from "./components/Loading";
+import * as moment from "moment";
+import momentDurationFormatSetup from "moment-duration-format";
+
+momentDurationFormatSetup(moment);
 
 const inter = Inter({ subsets: ["latin"] });
 

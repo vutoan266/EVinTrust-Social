@@ -34,7 +34,7 @@ function PinList() {
   }, [pinsLoading, hasMore]);
 
   return (
-    <div className="mt-3 px-4 md:px-5 pb-4">
+    <div className="mt-3 px-4 md:px-5 pb-4 aa">
       <div className="">
         {tags?.map((tag) => (
           <CheckableTag
@@ -55,7 +55,13 @@ function PinList() {
         ))}
       </div>
       {pinsLoading &&
-        (pins?.length ? <Spin className="m-auto" /> : <SkeletonCard />)}
+        (pins?.length ? (
+          <Spin className="m-auto" />
+        ) : (
+          <div className="mt-4 columns-1 md:columns-2 lg:columns-3 mb-4 xl:columns-4 space-y-6 mx-auto">
+            <SkeletonCard />
+          </div>
+        ))}
     </div>
   );
 }

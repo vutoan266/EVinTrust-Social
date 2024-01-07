@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import moment from "moment";
+import { timeDuration } from "../utils/utils";
 
 function UserTag({ user }) {
   //const {data:session}=useSession();
@@ -16,12 +16,11 @@ function UserTag({ user }) {
             height={30}
             className="rounded-full"
           />
-          <div className="flex justify-between flex-1">
+          <div className="">
             <h2 className="text-[14px] font-medium mb-0">{user.name}</h2>
-            <span className="text-gray-500 text-sm">
-              {moment(user.createdAt).format("DD/MM/YY HH:mm")}
+            <span className="text-gray-500 text-[10px]">
+              {timeDuration(user.createdAt)}
             </span>
-            {/* <h2 className="text-[12px]">{user.email}</h2> */}
           </div>
         </div>
       ) : null}

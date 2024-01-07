@@ -12,7 +12,11 @@
 ::after {
   --tw-content: "";
 }
-
+a:-webkit-any-link {
+  text-decoration: none;
+  color: unset;
+  cursor: unset;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

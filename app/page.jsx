@@ -2,11 +2,16 @@
 
 import { Suspense } from "react";
 import PinList from "./components/Pins/PinList";
-import { Skeleton } from "antd";
 
 export default function Home() {
   return (
-    <Suspense loading={<Skeleton />}>
+    <Suspense
+    // loading={
+    //   <div className="mt-4 columns-1 md:columns-2 lg:columns-3 mb-4 xl:columns-4 space-y-6 mx-auto">
+    //     Loafing
+    //   </div>
+    // }
+    >
       <PinList />
     </Suspense>
   );

@@ -65,7 +65,7 @@ function ShareForm() {
         >
           <Input
             placeholder="Nhập tiêu đề"
-            className="text-xl font-semibold w-full"
+            className="text-base font-semibold w-full"
           />
         </Form.Item>
         <Form.Item
@@ -73,31 +73,27 @@ function ShareForm() {
           name="desc"
           rules={[{ required: true, message: "Nhập mô tả" }]}
         >
-          <Input.TextArea placeholder="Mô tả" className="w-full text-sm" />
+          <Input.TextArea
+            placeholder="Mô tả"
+            className="w-full text-sm"
+            autoSize={{ minRows: 3 }}
+          />
         </Form.Item>
         <Form.Item
           label="Thẻ"
           name="tags"
           rules={[{ required: true, message: "Nhập thẻ" }]}
         >
-          <TagSelect placeholder="Mô tả" className="w-full text-sm" />
+          <TagSelect placeholder="Chủ đề" className="w-full text-sm" />
         </Form.Item>
-        <Form.Item
-          label="Đường dẫn"
-          name="link"
-          // rules={[{ required: true, message: "Nhập đường dẫn" }]}
-        >
+        <Form.Item label="Đường dẫn" name="link">
           <Input
             placeholder="Link mua hàng"
             className="w-full"
             addonBefore={<HiOutlineShoppingBag />}
           />
         </Form.Item>
-        <Form.Item
-          label="Địa chỉ/Vị trí"
-          name="ggLink"
-          // rules={[{ required: true, message: "Nhập link Google map" }]}
-        >
+        <Form.Item label="Địa chỉ/Vị trí" name="ggLink">
           <Input
             placeholder="Nhập link Google map"
             className="w-full"
