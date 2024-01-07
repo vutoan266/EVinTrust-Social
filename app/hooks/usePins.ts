@@ -61,7 +61,9 @@ export const usePins = ({ tag }: IProps) => {
       );
       const querySnapshot = await getDocs(q);
 
-      lastCursorRef.current = querySnapshot.docs[querySnapshot.docs.length - 1];
+      lastCursorRef.current = querySnapshot.docs[
+        querySnapshot.docs.length - 1
+      ] as any;
       // set data
       const newData: IPin[] = [];
       querySnapshot.forEach((doc) => {
